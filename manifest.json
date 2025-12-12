@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Mirrorly",
+  "version": "1.0.0",
+  "description": "Try on clothes from myntra using AI",
+
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["*://*.myntra.com/*"],
+  "action": {
+    "default_popup": "extension/ext.html",
+    "default_icon": {
+      "16": "icons/image.jpg",
+      "48": "icons/image.jpg",
+      "128": "icons/image.jpg"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.myntra.com/*"],
+      "js": ["script/script.js"],
+      "css": ["script/style.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "Background/background.js"
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*", "images/*"],
+      "matches": ["*://*.myntra.com/*"]
+    }
+  ],
+
+  "icons": {
+    "16": "icons/image.jpg",
+    "48": "icons/image.jpg",
+    "128": "icons/image.jpg"
+  }
+}
