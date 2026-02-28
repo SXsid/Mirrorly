@@ -52,14 +52,12 @@ function main() {
     }
   });
 
-  // File input change
   fileInput.addEventListener("change", (e) => {
     const files = Array.from(e.target.files);
     handleFiles(files);
     fileInput.value = ""; // Reset input
   });
 
-  // Handle file uploads
   function handleFiles(files) {
     const remainingSlots = MAX_IMAGES - uploadedImages.length;
     const filesToProcess = files.slice(0, remainingSlots);
@@ -80,7 +78,6 @@ function main() {
     }
   }
 
-  // Update preview grid
   function updatePreview() {
     previewGrid.innerHTML = "";
 

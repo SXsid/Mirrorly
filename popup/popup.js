@@ -1,3 +1,4 @@
+import { generate } from "./generate.js";
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
@@ -7,8 +8,6 @@ function init() {
   document
     .getElementById("settingsBtn")
     .addEventListener("click", openSettings);
-
-  document.getElementById("resetBtn").addEventListener("click", resetConfig);
 
   document.getElementById("generateBtn").addEventListener("click", generate);
 }
@@ -65,21 +64,4 @@ function loadPreviews() {
 /* ------------------ ACTIONS ------------------ */
 function openSettings() {
   chrome.runtime.openOptionsPage();
-}
-
-function generate() {
-  chrome.storage.sync.get(["apiKey"], (syncData) => {
-    chrome.storage.local.get(["referenceImages"], (localData) => {
-      if (!syncData.apiKey || !localData.referenceImages?.length) {
-        alert("Please configure API key and images first.");
-        return;
-      }
-
-      // 🔥 Your generation logic goes here
-      console.log("Generating with:", {
-        apiKey: syncData.apiKey,
-        images: localData.referenceImages.length,
-      });
-    });
-  });
 }
