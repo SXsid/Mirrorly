@@ -5,3 +5,16 @@ chrome.runtime.onInstalled.addListener(() => {
     }
   });
 });
+
+chrome.runtime.onMessage.addListener((msg, sender, sednResponse) => {
+  switch (msg.type) {
+    case "GENERATE":
+      console.log(msg.payload);
+      sednResponse(True);
+      break;
+
+    default:
+      console.log("Invalid message");
+      break;
+  }
+});

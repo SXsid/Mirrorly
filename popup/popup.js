@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
   loadStatus();
+  loadReference();
   loadPreviews();
 
   document
@@ -35,16 +36,37 @@ function loadStatus() {
     });
   });
 }
+function loadReference() {
+  const grid = document.getElementById("referenceGrid");
+  var images = [];
 
+  chrome.storage.local.get(["myntraImages"], (data) => {
+    images = data.myntraImages;
+    if (images.length === 0) {
+      grid.innerHTML = "";
+      grid.innerHTML = `<div class="empty">No reference images configured</div>`;
+      return;
+    }
+    images.forEach((src) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "preview";
+      const img = document.createElement("img");
+      img.srcset = src;
+      wrapper.appendChild(img);
+      grid.appendChild(wrapper);
+    });
+  });
+}
 function loadPreviews() {
   const grid = document.getElementById("previewGrid");
   grid.innerHTML = "";
 
+  const images = [];
   chrome.storage.local.get(["referenceImages"], (data) => {
-    const images = data.referenceImages || [];
+    const images = data.referenceImages;
 
     if (images.length === 0) {
-      grid.innerHTML = `<div class="empty">No reference images configured</div>`;
+      grid.innerHTML = `<div class="empty">You image is not configured</div>`;
       return;
     }
 

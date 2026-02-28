@@ -1,4 +1,4 @@
-export function generate() {
+export function generate(prompt) {
   chrome.storage.sync.get(["apiKey"], (syncData) => {
     chrome.storage.local.get(["referenceImages"], (localData) => {
       if (!syncData.apiKey || !localData.referenceImages?.length) {
@@ -6,11 +6,29 @@ export function generate() {
         return;
       }
 
-      // 🔥 Your generation logic goes here
-      console.log("Generating with:", {
+      const payload = {
         apiKey: syncData.apiKey,
-        images: localData.referenceImages.length,
-      });
+        images: localData.referenceImages,
+        prompt,
+      };
+      // 🔥 Your generation logic goes here
+      console.log("Generating with:", payload);
+
+      chrome.runtime.sendMessage(
+        {
+          type: "GENERATE",
+          payload: payload,
+        },
+        (response) => {
+          if (response?.error) {
+            console.error(response.error);
+            return;
+          }
+
+          console.log("Gemini response:", response.data);
+          document.getElementById("output").innerText = response.data;
+        },
+      );
     });
   });
 }
